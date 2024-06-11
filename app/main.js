@@ -58,11 +58,11 @@ const server = net.createServer((socket) => {
             }
 
         } else if (url.startsWith("/files/") && method === "POST") {
-            const fileName = url.split("/")[2];
-            const filePath = FILES_DIR + fileName;
-            const file = data.toString("utf-8").split("\r\n\r\n")[1];
-            
-            fs.writeFileSync(filePath, file);
+            const fileName = process.argv[3] + "/" + url.substring(7);
+            const req = data.toString().split("\r\n");
+            const body = req[req.length - 1];
+      
+            fs.writeFileSync(fileName, body);
             socket.write("HTTP/1.1 201 Created\r\n\r\n")
         }
 

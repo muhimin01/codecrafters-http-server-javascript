@@ -6,8 +6,11 @@ console.log("Logs from your program will appear here!");
 // Uncomment this to pass the first stage
 const server = net.createServer((socket) => {
     socket.on("data", (data) => {
-        const url = data.toString();
-        if (url.startsWith("GET / ")) {
+        const request = data.toString();
+        console.log("Request: \n" + request);
+        const url = request.split(' ')[1];
+
+        if (url == "/") {
             if (url.includes("/echo/")) {
                 const content = url.split("/echo/")[1];
                 const httpResponse = `Content-Type: text/plain\r\nContent-Length: ${content.length}\r\n\r\n`;

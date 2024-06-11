@@ -27,7 +27,7 @@ const server = net.createServer((socket) => {
         const request = parseRequest(data);
         const { method, url, protocol} = request;
 
-        console.log(`Request: ${method} ${url} ${protocol} ${headers}`);
+        console.log(`Request: ${method} ${url} ${protocol}`);
 
         function response(contentType, content) {
             console.log(content);

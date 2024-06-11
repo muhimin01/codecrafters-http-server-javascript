@@ -21,8 +21,15 @@ const server = net.createServer((socket) => {
         }
     });
 
+    socket.on("error", (err) => {
+        conseole.log("ERROR: " + err);
+        socket.end();
+        server.close();
+    });
+
     socket.on("close", () => {
         socket.end();
+        server.end();
     });
 });
 

@@ -44,7 +44,7 @@ const server = net.createServer((socket) => {
             const echo = url.split("/echo/")[1];
             response("text/plain", echo);
         } else if (url.startsWith("/user-agent")) {
-            const userAgent = headers[2].split('User-Agent: ')[1];
+            const userAgent = request.headers["User-Agent:"];
             response("text/plain", userAgent);
         } else if (url.startsWith("/files/") && method === "GET") {
             const filePath = process.argv[3];

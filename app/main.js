@@ -16,7 +16,7 @@ const server = net.createServer((socket) => {
 
         function response(contentType, content) {
             console.log(content);
-            socket.write(`HTTP/1.1 200 OK\r\nContent-Type: ${contentType}\r\nContent-Length: ${content.length}\r\n\r\n${content}`)
+            socket.write(`HTTP/1.1 200 OK\r\nContent-Type: ${contentType}\r\nContent-Length: ${content.length}\r\n\r\n${content}\r\n`)
         }
 
         function notfound() {
@@ -55,7 +55,7 @@ const server = net.createServer((socket) => {
 
     socket.on("close", () => {
         socket.end();
-        server.end();
+        server.close();
     });
 });
 

@@ -11,12 +11,16 @@ const server = net.createServer((socket) => {
         const request = data.toString();
         const url = request.split(' ')[1];
         const headers = request.split('\r\n');
-        
+
         console.log(`Request: ${request}`);
 
         function response(contentType, content) {
             console.log(content);
             socket.write(`HTTP/1.1 200 OK\r\nContent-Type: ${contentType}\r\nContent-Length: ${content.length}\r\n\r\n${content}\r\n`)
+        }
+
+        function notfound() {
+            socket.write("HTTP/1.1 404 Not Found\r\n\r\n");
         }
 
         if (url === "/") {
@@ -30,17 +34,19 @@ const server = net.createServer((socket) => {
         } else if (url.includes("/files/")) {
             const directory = process.argv[3];
             const filename = url.split("/files/")[1];
-            
+
             if (fs.existsSync(`${directory}/${filename}`)) {
                 const file = fs.readFileSync(`${directory}/${filename}`).toString();
                 response("application/octet-stream", file);
             } else {
-                socket.write("HTTP/1.1 404 Not Found\r\n\r\n");
+                notfound();
             }
 
         } else {
-            socket.write("HTTP/1.1 404 Not Found\r\n\r\n");
+            notfound();
         }
+        socket.end();
+        server.close();
     });
 
     socket.on("error", (err) => {

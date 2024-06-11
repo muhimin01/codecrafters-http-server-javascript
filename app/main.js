@@ -25,7 +25,7 @@ const parseRequest = (requestData) => {
 const server = net.createServer((socket) => {
     socket.on("data", (data) => {
         const request = parseRequest(data);
-        const { method, url, protocol, headers } = request;
+        const { method, url, protocol} = request;
 
         console.log(`Request: ${method} ${url} ${protocol} ${headers}`);
 
@@ -47,11 +47,13 @@ const server = net.createServer((socket) => {
             const userAgent = headers[2].split('User-Agent: ')[1];
             response("text/plain", userAgent);
         } else if (url.startsWith("/files/" && method === "GET")) {
-            const directory = process.argv[3];
+            const filePath = process.argv[3];
             const fileName = url.split("/files/")[1];
 
-            if (fs.existsSync(`${directory}/${fileName}`)) {
-                const file = fs.readFileSync(`${directory}/${fileName}`).toString();
+            console.log(`${filePath}/${fileName}`)
+
+            if (fs.existsSync(`${filePath}/${fileName}`)) {
+                const file = fs.readFileSync(`${filePath}/${fileName}`).toString();
                 response("application/octet-stream", file);
             } else {
                 notfound();

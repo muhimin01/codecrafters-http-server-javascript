@@ -45,8 +45,6 @@ const server = net.createServer((socket) => {
         } else {
             notfound();
         }
-        socket.end();
-        server.close();
     });
 
     socket.on("error", (err) => {

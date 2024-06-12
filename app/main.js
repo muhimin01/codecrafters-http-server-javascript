@@ -35,7 +35,6 @@ const server = net.createServer((socket) => {
         console.log(`Request: ${method} ${url} ${protocol}`);
         console.log(headers);
 
-
         function response(contentType, content, encoding) {
             let rsp = "HTTP/1.1 200 OK\r\n";
             rsp += `Content-Type: ${contentType}\r\n`;
@@ -49,6 +48,7 @@ const server = net.createServer((socket) => {
                 rsp += `Content-Length: ${content.length}\r\n`;
                 rsp += `\r\n${content}\r\n`;
             }
+            console.log(rsp);
             socket.write(rsp);
         }
 

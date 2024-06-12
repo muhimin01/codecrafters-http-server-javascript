@@ -65,7 +65,6 @@ const server = net.createServer((socket) => {
 
         } else if (url.startsWith("/user-agent")) {
             const userAgent = headers["User-Agent:"].toString();
-            console.log(userAgent);
             response("text/plain", userAgent);
 
         } else if (url.startsWith("/files/") && method === "GET") {

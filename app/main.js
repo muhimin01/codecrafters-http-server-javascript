@@ -34,7 +34,7 @@ const server = net.createServer((socket) => {
             //socket.write(`HTTP/1.1 200 OK\r\nContent-Type: ${contentType}\r\nContent-Length: ${content.length}\r\n\r\n${content}\r\n`)
             let rsp = "HTTP/1.1 200 OK\r\n";
             if (encoding != null) {
-                rsp += `Content-Encoding: ${contentType}\r\n`;
+                rsp += `Content-Encoding: ${encoding}\r\n`;
             }
             rsp += `Content-Type: ${contentType}\r\n`;
             rsp += `Content-Length: ${content.length}\r\n`;

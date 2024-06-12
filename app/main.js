@@ -26,10 +26,11 @@ const server = net.createServer((socket) => {
     socket.on("data", (data) => {
         const request = parseRequest(data);
         const { method, url, protocol} = request;
+        const header = request.headers;
 
         console.log(`Request: ${method} ${url} ${protocol}`);
 
-        function response(contentType, content) {
+        function response(contentType, content, headers) {
             console.log(content);
             socket.write(`HTTP/1.1 200 OK\r\nContent-Type: ${contentType}\r\nContent-Length: ${content.length}\r\n\r\n${content}\r\n`)
         }
@@ -42,7 +43,13 @@ const server = net.createServer((socket) => {
             socket.write("HTTP/1.1 200 OK\r\n\r\n");
         } else if (url.startsWith("/echo/")) {
             const echo = url.split("/echo/")[1];
-            response("text/plain", echo);
+            const extraHeaders = [];
+            switch (header["accept-encoding"]) {
+                case "gzip":
+                    extraHeaders.push(["Content-Encoding", "gizip"]);
+                    break;
+            }
+            response("text/plain", echo, extraHeaders);
         } else if (url.startsWith("/user-agent")) {
             const userAgent = request.headers["User-Agent:"];
             response("text/plain", userAgent);

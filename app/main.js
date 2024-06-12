@@ -29,6 +29,9 @@ const server = net.createServer((socket) => {
         console.log(`Request: ${method} ${url} ${protocol}`);
         console.log(headers);
 
+        if (headers.hasOwnProperty("Accept-Encoding:")) {
+            console.log("Encoding: true");
+        }
         console.log(headers["Accept-Encoding:"]);
 
         function response(contentType, content) {

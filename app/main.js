@@ -13,10 +13,13 @@ const parseRequest = (requestData) => {
         const [key, ...values] = header.split(" ");
     
         if (key && values.length > 0) {
-            if (!headers[key]) {
-                headers[key] = [];
+            const trimmedKey = key.trim();
+            const trimmedValues = values.map(value => value.trim().replace(/,$/, "")); // Trim values and remove trailing commas
+    
+            if (!headers[trimmedKey]) {
+                headers[trimmedKey] = [];
             }
-            headers[key].push(...values);
+            headers[trimmedKey].push(...trimmedValues);
         }
     });
 

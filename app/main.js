@@ -64,7 +64,7 @@ const server = net.createServer((socket) => {
             }
 
         } else if (url.startsWith("/user-agent")) {
-            const userAgent = request.headers["User-Agent:"];
+            const userAgent = headers["User-Agent:"].toString();
             console.log(userAgent);
             response("text/plain", userAgent);
 

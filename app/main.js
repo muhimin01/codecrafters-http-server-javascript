@@ -29,9 +29,7 @@ const server = net.createServer((socket) => {
         console.log(`Request: ${method} ${url} ${protocol}`);
         console.log(headers);
 
-        if (headers.hasOwnProperty("Accept-Encoding")) {
-            console.log("Encoding: true");
-        }
+        console.log(headers["Accept-Encoding:"]);
 
         function response(contentType, content) {
             socket.write(`HTTP/1.1 200 OK\r\nContent-Type: ${contentType}\r\nContent-Length: ${content.length}\r\n\r\n${content}\r\n`)
@@ -46,11 +44,6 @@ const server = net.createServer((socket) => {
 
         } else if (url.startsWith("/echo/")) {
             const echo = url.split("/echo/")[1];
-            
-            if (headers.hasOwnProperty("Accept-Encoding")) {
-                console.log("Encoding: true");
-            }
-            
             response("text/plain", echo);
 
         } else if (url.startsWith("/user-agent")) {

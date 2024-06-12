@@ -17,22 +17,20 @@ const parseRequest = (requestData) => {
         }
     });
 
+    console.log(headers);
     return { method, url, protocol, headers };
-
 };
 
 // Uncomment this to pass the first stage
 const server = net.createServer((socket) => {
     socket.on("data", (data) => {
         const request = parseRequest(data);
-        const { method, url, protocol} = request;
-        const header = request.headers;
+        const { method, url, protocol } = request;
 
-        console.log(`Request: ${method} ${url} ${protocol} ${header}`);
+        console.log(`Request: ${method} ${url} ${protocol}`);
 
-        function response(contentType, content, headers) {
-            console.log(content);
-            socket.write(`HTTP/1.1 200 OK\r\nContent-Type: ${contentType}\r\nContent-Length: ${content.length}\r\n\r\n${content}\r\nContent-Encoding: ${headers}\r\n`)
+        function response(contentType, content) {
+            socket.write(`HTTP/1.1 200 OK\r\nContent-Type: ${contentType}\r\nContent-Length: ${content.length}\r\n\r\n${content}\r\n`)
         }
 
         function notfound() {
@@ -41,18 +39,15 @@ const server = net.createServer((socket) => {
 
         if (url === "/") {
             socket.write("HTTP/1.1 200 OK\r\n\r\n");
+
         } else if (url.startsWith("/echo/")) {
             const echo = url.split("/echo/")[1];
-            const extraHeaders = [];
-            switch (header["accept-encoding"]) {
-                case "gzip":
-                    extraHeaders.push(["Content-Encoding", "gizip"]);
-                    break;
-            }
             response("text/plain", echo, extraHeaders);
+
         } else if (url.startsWith("/user-agent")) {
             const userAgent = request.headers["User-Agent:"];
             response("text/plain", userAgent);
+
         } else if (url.startsWith("/files/") && method === "GET") {
             const filePath = process.argv[3];
             const fileName = url.split("/files/")[1];
@@ -70,7 +65,7 @@ const server = net.createServer((socket) => {
             const fileName = process.argv[3] + "/" + url.substring(7);
             const req = data.toString().split("\r\n");
             const body = req[req.length - 1];
-      
+
             fs.writeFileSync(fileName, body);
             socket.write("HTTP/1.1 201 Created\r\n\r\n")
         }

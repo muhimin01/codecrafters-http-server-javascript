@@ -28,11 +28,11 @@ const server = net.createServer((socket) => {
         const { method, url, protocol} = request;
         const header = request.headers;
 
-        console.log(`Request: ${method} ${url} ${protocol}`);
+        console.log(`Request: ${method} ${url} ${protocol} ${header}`);
 
         function response(contentType, content, headers) {
             console.log(content);
-            socket.write(`HTTP/1.1 200 OK\r\nContent-Type: ${contentType}\r\nContent-Length: ${content.length}\r\n\r\n${content}\r\n${headers}\r\n`)
+            socket.write(`HTTP/1.1 200 OK\r\nContent-Type: ${contentType}\r\nContent-Length: ${content.length}\r\n\r\n${content}\r\nContent-Encoding: ${headers}\r\n`)
         }
 
         function notfound() {

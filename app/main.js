@@ -44,6 +44,7 @@ const server = net.createServer((socket) => {
                 rsp += `Content-Length: ${Buffer.byteLength(body)}\r\n`;
                 socket.write(rsp);
                 socket.write(body);
+                socket.write("\r\n")
             }
             else {
                 rsp += `Content-Length: ${content.length}\r\n`;
@@ -97,8 +98,6 @@ const server = net.createServer((socket) => {
         else {
             notfound();
         }
-
-        socket.end();
     });
 
     socket.on("error", (err) => {

@@ -36,11 +36,12 @@ const server = net.createServer((socket) => {
         console.log(headers);
 
         function response(contentType, content, encoding) {
-            console.log(content);
             let rsp = "HTTP/1.1 200 OK\r\n";
             rsp += `Content-Type: ${contentType}\r\n`;
             if (encoding != null) {
                 const body = zlib.gzipSync(content)
+                console.log(`Content: ${content}`);
+                console.log(`Body: ${body}`);
                 rsp += `Content-Encoding: ${encoding}\r\n`;
                 rsp += `Content-Length: ${Buffer.byteLength(body)}\r\n`;
                 rsp += `\r\n${body}\r\n`;

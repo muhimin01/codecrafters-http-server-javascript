@@ -32,7 +32,7 @@ const server = net.createServer((socket) => {
 
         function response(contentType, content, headers) {
             console.log(content);
-            socket.write(`HTTP/1.1 200 OK\r\nContent-Type: ${contentType}\r\nContent-Length: ${content.length}\r\n\r\n${content}\r\n`)
+            socket.write(`HTTP/1.1 200 OK\r\nContent-Type: ${contentType}\r\nContent-Length: ${content.length}\r\n\r\n${content}\r\n${headers}\r\n`)
         }
 
         function notfound() {

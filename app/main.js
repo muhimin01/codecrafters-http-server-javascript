@@ -36,6 +36,7 @@ const server = net.createServer((socket) => {
         console.log(headers);
 
         function response(contentType, content, encoding) {
+            console.log(content);
             let rsp = "HTTP/1.1 200 OK\r\n";
             rsp += `Content-Type: ${contentType}\r\n`;
             if (encoding != null) {

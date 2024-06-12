@@ -1,5 +1,6 @@
 const net = require("net");
 const fs = require("fs");
+const zlib = require("zlib");
 
 // You can use print statements as follows for debugging, they'll be visible when running tests.
 console.log("Logs from your program will appear here!");
@@ -37,12 +38,17 @@ const server = net.createServer((socket) => {
 
         function response(contentType, content, encoding) {
             let rsp = "HTTP/1.1 200 OK\r\n";
-            if (encoding != null) {
-                rsp += `Content-Encoding: ${encoding}\r\n`;
-            }
             rsp += `Content-Type: ${contentType}\r\n`;
-            rsp += `Content-Length: ${content.length}\r\n`;
-            rsp += `\r\n${content}\r\n`;
+            if (encoding != null) {
+                const body = zlib.gzipSync(content)
+                rsp += `Content-Encoding: ${encoding}\r\n`;                
+                rsp += `Content-Length: ${Buffer.byteLength(body)}\r\n`;
+                rsp += `\r\n${body}\r\n`;
+            }
+            else {
+                rsp += `Content-Length: ${content.length}\r\n`;
+                rsp += `\r\n${content}\r\n`;
+            }
             socket.write(rsp);
         }
 

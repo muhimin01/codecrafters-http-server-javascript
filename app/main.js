@@ -12,11 +12,11 @@ const parseRequest = (requestData) => {
 
     request.slice(1).forEach((header) => {
         const [key, ...values] = header.split(" ");
-    
+
         if (key && values.length > 0) {
             const trimmedKey = key.trim();
             const trimmedValues = values.map(value => value.trim().replace(/,$/, "")); // Trim values and remove trailing commas
-    
+
             if (!headers[trimmedKey]) {
                 headers[trimmedKey] = [];
             }
@@ -40,18 +40,16 @@ const server = net.createServer((socket) => {
             rsp += `Content-Type: ${contentType}\r\n`;
             if (encoding != null) {
                 const body = zlib.gzipSync(content)
-                rsp += `Content-Encoding: ${encoding}\r\n`;                
+                rsp += `Content-Encoding: ${encoding}\r\n`;
                 rsp += `Content-Length: ${Buffer.byteLength(body)}\r\n`;
-                socket.write(rsp);
-                socket.write(body);
-                socket.write("\r\n")
+                rsp += `\r\n${body}\r\n`;
             }
             else {
                 rsp += `Content-Length: ${content.length}\r\n`;
                 rsp += `\r\n${content}\r\n`;
-                socket.write(rsp);
             }
             console.log(rsp);
+            socket.write(rsp);
         }
 
         function notfound() {

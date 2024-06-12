@@ -10,10 +10,13 @@ const parseRequest = (requestData) => {
     const headers = []; //{}
 
     request.slice(1).forEach((header) => {
-        const [key, value] = header.split(" ");
-
-        if (key && value) {
-            headers[key] = value;
+        const [key, ...values] = header.split(" ");
+    
+        if (key && values.length > 0) {
+            if (!headers[key]) {
+                headers[key] = [];
+            }
+            headers[key].push(...values);
         }
     });
 

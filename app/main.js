@@ -28,6 +28,7 @@ const server = net.createServer((socket) => {
         const { method, url, protocol, headers } = request;
 
         console.log(`Request: ${method} ${url} ${protocol}`);
+        console.log(headers);
 
         function response(contentType, content) {
             socket.write(`HTTP/1.1 200 OK\r\nContent-Type: ${contentType}\r\nContent-Length: ${content.length}\r\n\r\n${content}\r\n`)

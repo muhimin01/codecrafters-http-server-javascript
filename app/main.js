@@ -43,8 +43,9 @@ const server = net.createServer((socket) => {
                 console.log(`Content: ${content}`);
                 console.log(body);
                 rsp += `Content-Encoding: ${encoding}\r\n`;
-                rsp += `Content-Length: ${Buffer.byteLength(body)}\r\n`;
-                rsp += `\r\n${body}\r\n`;
+                rsp += `Content-Length: ${Buffer.byteLength(body)}\r\n\r\n`;
+                //rsp += `\r\n${body}\r\n`;
+                socket.write(rsp + body + "\r\n");
             }
             else {
                 rsp += `Content-Length: ${content.length}\r\n`;

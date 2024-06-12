@@ -39,7 +39,7 @@ const server = net.createServer((socket) => {
             let rsp = "HTTP/1.1 200 OK\r\n";
             rsp += `Content-Type: ${contentType}\r\n`;
             if (encoding != null) {
-                const body = zlib.gzipSync(content)
+                const body = zlib.gzipSync(content.toString());
                 console.log(`Content: ${content}`);
                 console.log(`Body: ${body}`);
                 rsp += `Content-Encoding: ${encoding}\r\n`;

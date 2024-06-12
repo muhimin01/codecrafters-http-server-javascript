@@ -97,6 +97,8 @@ const server = net.createServer((socket) => {
         else {
             notfound();
         }
+
+        socket.end();
     });
 
     socket.on("error", (err) => {

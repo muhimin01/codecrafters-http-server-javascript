@@ -20,7 +20,6 @@ const parseRequest = (requestData) => {
     return { method, url, protocol, headers };
 };
 
-// Uncomment this to pass the first stage
 const server = net.createServer((socket) => {
     socket.on("data", (data) => {
         const request = parseRequest(data);
@@ -31,7 +30,6 @@ const server = net.createServer((socket) => {
 
 
         function response(contentType, content, encoding) {
-            //socket.write(`HTTP/1.1 200 OK\r\nContent-Type: ${contentType}\r\nContent-Length: ${content.length}\r\n\r\n${content}\r\n`)
             let rsp = "HTTP/1.1 200 OK\r\n";
             if (encoding != null) {
                 rsp += `Content-Encoding: ${encoding}\r\n`;
@@ -51,8 +49,7 @@ const server = net.createServer((socket) => {
 
         } else if (url.startsWith("/echo/")) {
             const echo = url.split("/echo/")[1];
-            if (headers.hasOwnProperty("Accept-Encoding:") && headers["Accept-Encoding:"] === "gzip") {
-                //console.log(headers["Accept-Encoding:"]);
+            if (headers.hasOwnProperty("Accept-Encoding:") && headers["Accept-Encoding:"].hasOwnProperty("gzip")) {
                 const encoding = headers["Accept-Encoding:"];
                 response("text/plain", echo, encoding);
             }

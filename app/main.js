@@ -25,9 +25,9 @@ const parseRequest = (requestData) => {
 const server = net.createServer((socket) => {
     socket.on("data", (data) => {
         const request = parseRequest(data);
-        const { method, url, protocol } = request;
+        const { method, url, protocol, headers} = request;
 
-        console.log(`Request: ${method} ${url} ${protocol}`);
+        console.log(`Request: ${method} ${url} ${protocol} ${headers}`);
 
         function response(contentType, content) {
             socket.write(`HTTP/1.1 200 OK\r\nContent-Type: ${contentType}\r\nContent-Length: ${content.length}\r\n\r\n${content}\r\n`)

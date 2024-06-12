@@ -42,7 +42,7 @@ const server = net.createServer((socket) => {
 
         } else if (url.startsWith("/echo/")) {
             const echo = url.split("/echo/")[1];
-            response("text/plain", echo, extraHeaders);
+            response("text/plain", echo);
 
         } else if (url.startsWith("/user-agent")) {
             const userAgent = request.headers["User-Agent:"];

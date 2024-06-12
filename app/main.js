@@ -7,7 +7,7 @@ console.log("Logs from your program will appear here!");
 const parseRequest = (requestData) => {
     const request = requestData.toString().split("\r\n");
     const [method, url, protocol] = request[0].split(" ");
-    const headers = []; //{}
+    const headers = {};
 
     request.slice(1).forEach((header) => {
         const [key, ...values] = header.split(" ");

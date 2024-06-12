@@ -56,7 +56,7 @@ const server = net.createServer((socket) => {
         } else if (url.startsWith("/echo/")) {
             const echo = url.split("/echo/")[1];
             if (headers.hasOwnProperty("Accept-Encoding:") && headers["Accept-Encoding:"].includes("gzip")) {
-                const encoding = headers["Accept-Encoding:"];
+                const encoding = "gzip";
                 response("text/plain", echo, encoding);
             }
             else {

@@ -29,13 +29,17 @@ const server = net.createServer((socket) => {
         console.log(`Request: ${method} ${url} ${protocol}`);
         console.log(headers);
 
-        if (headers.hasOwnProperty("Accept-Encoding:")) {
-            console.log("Encoding: true");
-        }
-        console.log(headers["Accept-Encoding:"]);
 
-        function response(contentType, content) {
-            socket.write(`HTTP/1.1 200 OK\r\nContent-Type: ${contentType}\r\nContent-Length: ${content.length}\r\n\r\n${content}\r\n`)
+        function response(contentType, content, encoding) {
+            //socket.write(`HTTP/1.1 200 OK\r\nContent-Type: ${contentType}\r\nContent-Length: ${content.length}\r\n\r\n${content}\r\n`)
+            let rsp = "HTTP/1.1 200 OK\r\n";
+            if (encoding != null) {
+                rsp += `Content-Encoding: ${contentType}\r\n`;
+            }
+            rsp += `Content-Type: ${contentType}\r\n`;
+            rsp += `Content-Length: ${content.length}\r\n`;
+            rsp += `\r\n${content}\r\n`;
+            socket.write(rsp);
         }
 
         function notfound() {
@@ -47,10 +51,17 @@ const server = net.createServer((socket) => {
 
         } else if (url.startsWith("/echo/")) {
             const echo = url.split("/echo/")[1];
-            response("text/plain", echo);
+            if (headers.hasOwnProperty("Accept-Encoding:")) {
+                //console.log(headers["Accept-Encoding:"]);
+                const encoding = headers["Accept-Encoding:"];
+                response("text/plain", echo, encoding);
+            }
+            else {
+                response("text/plain", echo);
+            }
 
         } else if (url.startsWith("/user-agent")) {
-            const userAgent = headers["User-Agent:"]; // if error occurs, revert back to request.headers["User-Agent:"];
+            const userAgent = headers["User-Agent:"];
             response("text/plain", userAgent);
 
         } else if (url.startsWith("/files/") && method === "GET") {

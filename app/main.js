@@ -42,14 +42,15 @@ const server = net.createServer((socket) => {
                 const body = zlib.gzipSync(content)
                 rsp += `Content-Encoding: ${encoding}\r\n`;                
                 rsp += `Content-Length: ${Buffer.byteLength(body)}\r\n`;
-                rsp += `\r\n${body}\r\n`;
+                socket.write(rsp);
+                socket.write(body);
             }
             else {
                 rsp += `Content-Length: ${content.length}\r\n`;
                 rsp += `\r\n${content}\r\n`;
+                socket.write(rsp);
             }
             console.log(rsp);
-            socket.write(rsp);
         }
 
         function notfound() {
@@ -76,8 +77,6 @@ const server = net.createServer((socket) => {
         } else if (url.startsWith("/files/") && method === "GET") {
             const filePath = process.argv[3];
             const fileName = url.split("/files/")[1];
-
-            console.log(`${filePath}/${fileName}`)
 
             if (fs.existsSync(`${filePath}/${fileName}`)) {
                 const file = fs.readFileSync(`${filePath}/${fileName}`).toString();
